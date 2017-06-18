@@ -1,0 +1,8 @@
+{
+    "require": {
+        "php": "^5.4",
+        "djchen/pocket-api-php": "dev-master",
+        "respect/validation": "^1.1",
+        "augustohp/getopt-php": "^3.0"
+    }
+}
