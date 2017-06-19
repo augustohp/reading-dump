@@ -38,6 +38,25 @@ function checkRequiredTemplateVariables(
     }
 }
 
+function renderTemplate($name, array $templateVariables)
+{
+    $layoutFile = __DIR__ . '/layout.php';
+    $template = __DIR__ . '/' . $name . '.template.php';
+    if (false === file_exists($template)) {
+        throw new \UnexpectedValueException(
+            sprintf(
+                'Template "%s" not found.',
+                $template
+            )
+        );
+    }
+    foreach ($templateVariables as $name=>$value) {
+        $$name = $value;
+    }
+
+    return require $layoutFile;
+}
+
 // The application
 $pocketApi = new Pocket([
     'consumerKey' => APP_CONSUMER_KEY
@@ -53,9 +72,13 @@ if ($userNeedsToAuthorizeApp) {
         urlencode($queryStringParameterWithRequestToken . $requestObject['request_token']),
         $requestObject['redirect_uri']
     );
-    return require __DIR__ . '/request_token.template.php';
+    return renderTemplate(
+        'request_token',
+        compact('requestUrl')
+    );
 }
 
 $userObject = $pocketApi->convertToken($requestToken);
 $accessToken = $userObject['access_token'];
+$userName = $userObject['username'];
 return require __DIR__ . '/print_token.template.php';
