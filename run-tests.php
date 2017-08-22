@@ -3,13 +3,19 @@
 $total = $success = $failure = 0;
 $executeTest = function($file) use (&$total, &$success, &$failure)
 {
+    ob_start();
     $result = require $file;
+    $testOutput = ob_get_clean();
+
     $total++;
     if ($result === 0) {
-        echo '.';
+        echo "Test '$file' successfull." . PHP_EOL;
         $success++;
     } else {
-        echo 'E';
+        echo PHP_EOL . 'Problem on: ' . $file . PHP_EOL;
+        echo str_repeat('-', 80) . PHP_EOL;
+        echo $testOutput . PHP_EOL;
+        echo str_repeat('-', 80) . PHP_EOL;
         $failure++;
     }
 };
@@ -25,6 +31,7 @@ foreach (glob('test/*.php') as $file) {
 
     $executeTest($file);
 }
+
 $endTime = microtime(true);
 $totalTime = $endTime - $starTime ;
 echo PHP_EOL . PHP_EOL ;
