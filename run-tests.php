@@ -4,15 +4,15 @@ $total = $success = $failure = 0;
 $executeTest = function($file) use (&$total, &$success, &$failure)
 {
     ob_start();
-    $result = require $file;
+    $isSuccess = require $file;
     $testOutput = ob_get_clean();
 
     $total++;
-    if ($result === 0) {
-        echo "Test '$file' successfull." . PHP_EOL;
+    if ($isSuccess) {
+        echo "[x] '$file'" . PHP_EOL;
         $success++;
     } else {
-        echo PHP_EOL . 'Problem on: ' . $file . PHP_EOL;
+        echo PHP_EOL . '[ ] ' . $file . PHP_EOL;
         echo str_repeat('-', 80) . PHP_EOL;
         echo $testOutput . PHP_EOL;
         echo str_repeat('-', 80) . PHP_EOL;

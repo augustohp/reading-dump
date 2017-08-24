@@ -1,8 +1,10 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/functions.php';
 
 use Respect\Validation\Validator as v;
+use Respect\Validation\Exceptions\ValidationException;
 use tflori\Getopt;
 
 function mapLineToArguments($line)
@@ -40,10 +42,11 @@ function mapCommandCallToArguments($argv)
 function actionPerLine(Pocket $api, array $arguments)
 {
     list($url) = $arguments;
-    return $api->add([
-        "url" => $url,
-        "title" => "A test article for github.com/augustohp/reading-dump",
-        "tags" => "test"
-    ]);
+    return pocketAdd(
+        $api,
+        $url,
+        "A test article for github.com/augustohp/reading-dump",
+        ["test"]
+    );
 }
 

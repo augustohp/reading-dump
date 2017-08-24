@@ -46,8 +46,11 @@ if ($isPipedExecution) {
         $line = fgets(STDIN);
         $saneLine = trim($line);
         $arguments = mapLineToArguments($line);
+        if (empty($arguments)) {
+            continue;
+        }
         actionPerLine($pocketApi, $arguments);
-        echo line;
+        echo $line;
     }
 } else {
     $arguments = mapCommandCallToArguments($argv);
